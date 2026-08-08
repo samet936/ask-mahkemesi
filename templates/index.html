@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>T.C. Aşk Mahkemesi ⚖️</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .court-font { font-family: 'Cinzel', serif; }
+    </style>
+</head>
+<body style="background-color: #fce7f3;" class="min-h-screen py-10 px-4 flex justify-center items-center">
+
+    <div class="max-w-2xl w-full bg-white rounded-2xl shadow-2xl border-2 border-pink-300 overflow-hidden relative">
+        
+        <!-- Üst Başlık & Hello Kitty Detayı -->
+        <div class="bg-amber-900 text-amber-100 p-6 text-center border-b-4 border-amber-700 relative">
+            <span class="absolute top-3 left-4 text-2xl">🎀</span>
+            <span class="absolute top-3 right-4 text-2xl">🐱</span>
+            <p class="text-xs tracking-widest uppercase text-amber-300 font-semibold mb-1">T.C. YÜKSEK AŞK MAHKEMESİ</p>
+            <h1 class="court-font text-2xl md:text-3xl font-bold tracking-wide flex items-center justify-center gap-2">
+                <span>🎀</span> ESAS NO: 2026/01 <span>🎀</span>
+            </h1>
+        </div>
+
+        <div class="p-6 md:p-8 space-y-6">
+            
+            <!-- Taraflar Künyesi -->
+            <div class="grid grid-cols-2 gap-4 bg-pink-50/80 p-4 rounded-xl border border-pink-200 text-sm">
+                <div>
+                    <span class="block text-xs font-bold text-amber-900 uppercase">Müşteki (Mağdur Taraf):</span>
+                    <span class="text-base font-semibold text-gray-800">Özge 👑</span>
+                </div>
+                <div>
+                    <span class="block text-xs font-bold text-amber-900 uppercase">Davalı (Sanık):</span>
+                    <span class="text-base font-semibold text-gray-800">Samet 🙈</span>
+                </div>
+                <div class="col-span-2 pt-2 border-t border-pink-200">
+                    <span class="block text-xs font-bold text-amber-900 uppercase">Mahkeme Başkanı (Karar Mercii):</span>
+                    <span class="text-base font-semibold text-amber-900">Yüce Hakim Özge ⚖️</span>
+                    <p class="text-[11px] text-gray-500 italic mt-0.5">*Hukuki haklılık gereğince Özge Başhakim sıfatıyla yetkilendirilmiştir.</p>
+                </div>
+                <div class="col-span-2 pt-2 border-t border-pink-200">
+                    <span class="block text-xs font-bold text-amber-900 uppercase">Suçlama:</span>
+                    <span class="text-gray-700">Aşırı düşüncesizlik, kalbini sebepsizce kırma ve kronik tatlılık eksikliği suçu.</span>
+                </div>
+            </div>
+
+            <!-- Sanık İfadesi -->
+            <div class="space-y-2">
+                <h2 class="court-font text-lg font-bold text-amber-900 flex items-center gap-2">
+                    <span>📜</span> Sanık Samet'in Yazılı İtiraf ve Savunması
+                </h2>
+                <div class="bg-gray-50 italic text-gray-700 p-4 rounded-xl border-l-4 border-amber-800 text-sm leading-relaxed space-y-2">
+                    <p>"Sayın Başhakimim Özge,</p>
+                    <p>İşlenen düşüncesizlik suçunu kabul ediyorum ancak bu durum tamamen <strong>aşırı özlemden dolayı akıl sağlığımın geçici olarak devre dışı kalmasından</strong> kaynaklanmıştır! Yanında olamamak, o güzel yüzünü görememek ve sesini duyamamak bende ciddi algı bozukluğuna yol açmıştır."</p>
+                    <p>"Müebbet sarılma veya ağırlaştırılmış tatlı ısmarlama cezası dahil verilecek HER TÜRLÜ karara razıyım. Yeter ki yüce mahkemeniz beraatimi ve affımı onaylasın..."</p>
+                </div>
+            </div>
+
+            <!-- Hakim Karar Alanı -->
+            <div id="selection-area" class="space-y-4">
+                <h2 class="court-font text-lg font-bold text-amber-900 flex items-center gap-2">
+                    <span>⚖️</span> Hakim Özge'nin Şartlı Beraat Maddeleri
+                </h2>
+                <p class="text-xs text-gray-500">Sanığın affedilmesi için yerine getirmesini istediğin şartları işaretle:</p>
+
+                <div class="space-y-3">
+                    {% for penalty in penalties %}
+                    <label class="flex items-start gap-3 p-3 rounded-lg border border-pink-200 hover:bg-pink-50 transition cursor-pointer">
+                        <input type="checkbox" value="{{ penalty.id }}" class="penalty-checkbox mt-1 w-4 h-4 text-amber-900 rounded focus:ring-amber-800">
+                        <span class="text-sm font-medium text-gray-700">{{ penalty.text }}</span>
+                    </label>
+                    {% endfor %}
+                </div>
+
+                <button onclick="submitVerdict()" class="w-full mt-4 bg-amber-900 hover:bg-amber-800 text-white font-bold py-3 px-6 rounded-xl shadow-lg transition duration-200 court-font tracking-wide flex justify-center items-center gap-2">
+                    <span>👨‍⚖️</span> HÜKMÜ AÇIKLA VE KARARI VER
+                </button>
+            </div>
+
+            <!-- Karar Sonuç Alanı (Hello Kitty Süslemeli + Fotoğraflı) -->
+            <div id="verdict-result" class="hidden space-y-4 text-center py-4 relative">
+                
+                <div class="inline-block bg-pink-100 text-pink-800 text-xs font-bold px-4 py-1.5 rounded-full uppercase tracking-wider mb-2 border border-pink-300">
+                    🎀 Karar Kesinleşti 🐱
+                </div>
+                
+                <h2 class="court-font text-3xl font-bold text-amber-900">BERAAT VE AF KARARI</h2>
+                <p class="text-sm text-gray-600">Sanık Samet, aşağıdaki şartları eksiksiz yerine getirmesi koşuluyla <strong>AFFEDİLMİŞTİR</strong>.</p>
+
+                <!-- Birlikte Olduğunuz Fotoğraf Alanı -->
+                <div class="my-6 flex justify-center">
+                    <div class="p-3 bg-white rounded-2xl shadow-xl border-2 border-pink-300 inline-block relative max-w-xs">
+                        <span class="absolute -top-3 -left-3 text-2xl">🎀</span>
+                        <span class="absolute -top-3 -right-3 text-2xl">✨</span>
+                        <img src="{{ url_for('static', filename='biz.jpg') }}" alt="Biz" class="w-full h-56 object-cover rounded-xl shadow-inner">
+                        <p class="text-xs text-pink-700 font-bold mt-2.5 flex items-center justify-center gap-1">
+                            <span>🐱</span> En Büyük Beraat Delili <span>💖</span>
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="bg-pink-50 p-4 rounded-xl border border-pink-200 text-left space-y-2">
+                    <span class="block text-xs font-bold text-amber-900 uppercase">Kabul Edilen Şartlar & Cezalar:</span>
+                    <ul id="chosen-list" class="list-disc list-inside text-sm text-gray-700 space-y-1"></ul>
+                </div>
+
+                <div class="pt-4 border-t border-gray-100">
+                    <span class="court-font font-bold text-amber-900 block text-lg">Mühür: BERAAT ETTİRİLDİ ❤️</span>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        async function submitVerdict() {
+            const checkboxes = document.querySelectorAll('.penalty-checkbox:checked');
+            const selectedIds = Array.from(checkboxes).map(cb => parseInt(cb.value));
+
+            const response = await fetch('/verdict', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ selected_penalties: selectedIds })
+            });
+
+            const result = await response.json();
+
+            if (result.status === 'success') {
+                const chosenList = document.getElementById('chosen-list');
+                chosenList.innerHTML = '';
+                
+                if (result.chosen_penalties.length === 0) {
+                    chosenList.innerHTML = '<li class="italic text-gray-500">Sanık koşulsuz şartsız affedildi (Büyük büyüklük!).</li>';
+                } else {
+                    result.chosen_penalties.forEach(item => {
+                        const li = document.createElement('li');
+                        li.textContent = item;
+                        chosenList.appendChild(li);
+                    });
+                }
+
+                document.getElementById('selection-area').classList.add('hidden');
+                document.getElementById('verdict-result').classList.remove('hidden');
+
+                confetti({
+                    particleCount: 150,
+                    spread: 80,
+                    origin: { y: 0.6 }
+                });
+            }
+        }
+    </script>
+</body>
+</html>
